@@ -29,6 +29,10 @@ Timer.prototype.tick = function () {
 }
 
 function GameEngine() {
+	this.sceneManager = new SceneManager(this);
+	this.camera = new Camera(this);
+	this.meta = new Meta(this);
+	this.mapX = 0;
     this.entities = [];
     this.showOutlines = false;
     this.ctx = null;
@@ -79,7 +83,6 @@ GameEngine.prototype.startInput = function () {
 
 GameEngine.prototype.addEntity = function (entity) {
     console.log('added entity');
-
     this.entities.push(entity);
 }
 
@@ -94,15 +97,15 @@ GameEngine.prototype.draw = function () {
 
 GameEngine.prototype.update = function () {
     var entitiesCount = this.entities.length;
+	//this.camera.update();
 	var cameraCoords = {x:"" , y: ""};
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
         if (!entity.removeFromWorld) {
+			//alert(entity.name);
             entity.update();
         }
-		if (typeof(entity.name) !== undefined && entity.name === "Camera") {
-			cameraCoords = {x: entity.gameX, y:entity.gameY};
-		}
+	
     }
 
     for (var i = this.entities.length - 1; i >= 0; --i) {
